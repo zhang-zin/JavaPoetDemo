@@ -1,8 +1,6 @@
-package com.zj.arouter_api;
+package com.zj.other;
 
 import org.junit.Test;
-
-import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
@@ -15,14 +13,5 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
-    }
-
-    @Test
-    public void test(){
-        String s = "^/*/*";
-        String pa = "/order/Order_MainActivity";
-        String ss = "^/[a-z]+";
-        boolean matches = Pattern.matches(s, pa);
-        System.out.println(matches);
     }
 }

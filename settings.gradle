@@ -1,3 +1,5 @@
+include ':My'
+include ':other'
 include ':arouter_api'
 include ':javaPoetDemo_compiler'
 include ':javaPoetDemo_annotations'

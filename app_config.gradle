@@ -1,4 +1,4 @@
 ext{
     // 定义一个包名，用于存放APT生成的所有类文件
-    packageNameForAPT = "com.zj.new_modular_customarouter";
+    packageNameForAPT = "com.zj.javapoetdemo"
 }

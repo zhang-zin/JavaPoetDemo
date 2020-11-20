@@ -23,6 +23,8 @@
     <bytecodeTargetLevel target="1.7">
       <module name="JavaPoetDemo.app" target="1.8" />
       <module name="JavaPoetDemo.arouter_api" target="1.8" />
+      <module name="JavaPoetDemo.My" target="1.8" />
+      <module name="JavaPoetDemo.other" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

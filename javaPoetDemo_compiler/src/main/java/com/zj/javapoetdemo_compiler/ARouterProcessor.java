@@ -13,18 +13,12 @@ import com.zj.javapoetdemo_annotations.bean.RouterBean;
 import com.zj.javapoetdemo_compiler.utils.ProcessorConfig;
 import com.zj.javapoetdemo_compiler.utils.ProcessorUtils;
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.jar.JarFile;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -38,7 +32,6 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -76,7 +69,6 @@ public class ARouterProcessor extends AbstractProcessor {
 
     private Map<String, List<RouterBean>> allPathMap = new HashMap<>();
     private Map<String, String> allGroupMap = new HashMap<>();
-
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
@@ -148,7 +140,7 @@ public class ARouterProcessor extends AbstractProcessor {
             }
         }
 
-        TypeElement pathType = elementUtils.getTypeElement("com.zj.arouter_api.ARouterPath");
+        TypeElement pathType = elementUtils.getTypeElement(ProcessorConfig.AROUTER_API_PATH);
         TypeElement groupType = elementUtils.getTypeElement(ProcessorConfig.AROUTER_API_GROUP);
 
         try {
@@ -185,7 +177,6 @@ public class ARouterProcessor extends AbstractProcessor {
         String finalGroup = path.substring(1, path.indexOf("/", 1));
 
         if (!ProcessorUtils.isEmptyString(group) && !group.equals(moduleName)) {
-            // 架构师定义规范，让开发者遵循
             messager.printMessage(Diagnostic.Kind.ERROR, "@ARouter注解中的group值必须和子模块名一致！");
             return false;
         } else {

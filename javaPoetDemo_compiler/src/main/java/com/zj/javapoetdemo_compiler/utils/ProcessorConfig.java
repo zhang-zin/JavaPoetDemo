@@ -8,6 +8,11 @@ public interface ProcessorConfig {
     String AROUTER_PACKAGE = "com.zj.javapoetdemo_annotations.ARouter";
 
     /**
+     * @Parameter注解
+     */
+    String PARAMETER_PACKAGE = "com.zj.javapoetdemo_annotations.Parameter";
+
+    /**
      * 接收参数的TAG标记 接收 每个module名称
      */
     String OPTIONS = "moduleName";
@@ -33,6 +38,8 @@ public interface ProcessorConfig {
      * ARouter api 的 ARouterPath 高层标准
      */
     String AROUTER_API_PATH = AROUTER_API_PACKAGE + ".ARouterPath";
+
+    String AROUTER_AIP_PARAMETER_GET = AROUTER_API_PACKAGE + ".ParameterGet";
 
     /**
      * 路由组，中的 Path 里面的 方法名
@@ -62,5 +69,12 @@ public interface ProcessorConfig {
      * 路由组，GROUP 最终要生成的 文件名
      */
     String GROUP_FILE_NAME = "ARouter$$Group$$";
+
+    String PARAMETER_NAME = "targetParameter";
+    String PARAMETER_METHOD_NAME = "getParameter";
+    String STRING = "java.lang.String";
+
+    String PARAMETER_FILE_NAME = "$$Parameter";
+
 
 }
