@@ -108,6 +108,8 @@ public class ParameterProcessor extends AbstractProcessor {
                 MethodSpec methodSpec = new ParameterMethodFactory.Builder(parameterSpec)
                         .setClassName(className)
                         .setMessager(messager)
+                        .setElementUtils(elementUtils)
+                        .setTypeUtils(typeUtils)
                         .build()
                         .buildStatement(tempParameterMap.get(typeElement))
                         .buildMethodSpec();

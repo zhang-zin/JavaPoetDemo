@@ -11,7 +11,8 @@ public class RouterBean {
         /**
          *
          */
-        ACTIVITY
+        ACTIVITY,
+        CALL
     }
 
     /**

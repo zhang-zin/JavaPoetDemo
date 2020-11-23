@@ -22,6 +22,8 @@ import javax.lang.model.element.Modifier;
 import javax.annotation.processing.Messager;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
 /**
@@ -34,11 +36,16 @@ public class ParameterMethodFactory {
 
     private final Messager messager;
     private final ClassName className;
+    private final TypeMirror callMirror;
+    private final Types typeUtils;
     private MethodSpec.Builder methodBuilder;
 
     private ParameterMethodFactory(Builder builder) {
         className = builder.className;
         messager = builder.messager;
+        callMirror = builder.elementUtils.getTypeElement(ProcessorConfig.AROUTER_API_CALL).asType();
+        typeUtils = builder.typeUtils;
+
         addMethodName(builder.parameterSpec);
         addFirstStatement();
     }
@@ -100,11 +107,24 @@ public class ParameterMethodFactory {
                 default:
                     if (typeMirror.toString().equalsIgnoreCase(ProcessorConfig.STRING)) {
                         methodContent += "getStringExtra($S)";
+                    } else if (typeUtils.isSubtype(typeMirror, callMirror)) {
+                        // t.orderDrawable = (OrderDrawable) RouterManager.getInstance().build("/order/getDrawable").navigation(t);
+                        methodContent = "t." + fieldName + " = ($T)$T.getInstance().build($S).navigation(t)";
+                        methodBuilder.addStatement(methodContent,
+                                TypeName.get(typeMirror),
+                                ClassName.get(ProcessorConfig.AROUTER_API_PACKAGE, ProcessorConfig.ROUTER_MANAGER),
+                                annotationValue);
+                        continue;
+                    } else {
+                        methodContent = "getSerializableExtra($S)";
                     }
                     break;
             }
 
-            if (methodContent.endsWith(")")) {
+            if (methodContent.contains("Serializable")) {
+                // t.student=(Student) t.getIntent().getSerializableExtra("student");
+                methodBuilder.addStatement(finalValue + "=($T)" + methodContent, ClassName.get(element.asType()), annotationValue);
+            } else if (methodContent.endsWith(")")) {
                 methodBuilder.addStatement(methodContent, annotationValue);
             } else {
                 messager.printMessage(Diagnostic.Kind.ERROR, typeMirror.toString() + "不支持此参数类型");
@@ -125,6 +145,8 @@ public class ParameterMethodFactory {
         private ClassName className;
         private Messager messager;
         private ParameterSpec parameterSpec;
+        private Elements elementUtils;
+        private Types typeUtils;
 
         public Builder(ParameterSpec parameterSpec) {
             this.parameterSpec = parameterSpec;
@@ -156,5 +178,15 @@ public class ParameterMethodFactory {
             return new ParameterMethodFactory(this);
         }
 
+        public Builder setElementUtils(Elements elementUtils) {
+            this.elementUtils = elementUtils;
+            return this;
+        }
+
+        public Builder setTypeUtils(Types typeUtils) {
+            this.typeUtils = typeUtils;
+            return this;
+
+        }
     }
 }

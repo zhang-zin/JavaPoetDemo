@@ -38,6 +38,7 @@ public interface ProcessorConfig {
      * ARouter api 的 ARouterPath 高层标准
      */
     String AROUTER_API_PATH = AROUTER_API_PACKAGE + ".ARouterPath";
+    String AROUTER_API_CALL = AROUTER_API_PACKAGE + ".Call";
 
     String AROUTER_AIP_PARAMETER_GET = AROUTER_API_PACKAGE + ".ParameterGet";
 
@@ -75,6 +76,7 @@ public interface ProcessorConfig {
     String STRING = "java.lang.String";
 
     String PARAMETER_FILE_NAME = "$$Parameter";
+    String ROUTER_MANAGER = "RouterManager";
 
 
 }

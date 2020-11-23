@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class RouterManager {
 
-    private  String FILE_SUFFIX_NAME = "ARouter$$Group$$";
+    private String FILE_SUFFIX_NAME = "ARouter$$Group$$";
 
     private String group;
     private String path;
@@ -100,6 +100,11 @@ public class RouterManager {
                             intent.putExtras(bundleManager.getBundle());
                             context.startActivity(intent, bundleManager.getBundle());
                             break;
+                        case CALL:
+                            Class<?> clazz = routerBean.getMyClass();
+                            Call call = (Call) clazz.newInstance();
+                            bundleManager.setCall(call);
+                            return bundleManager.getCall();
                         default:
                             break;
                     }

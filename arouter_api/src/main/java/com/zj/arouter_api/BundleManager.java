@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
+
 /**
  * 传递参数
  *
@@ -14,6 +16,8 @@ import androidx.annotation.Nullable;
 public class BundleManager {
 
     private Bundle bundle = new Bundle();
+
+    private Call call;
 
     public Bundle getBundle() {
         return bundle;
@@ -39,7 +43,20 @@ public class BundleManager {
         return this;
     }
 
-    public void navigation(Context context) {
-        RouterManager.getInstance().navigation(context, this);
+    public BundleManager withSerializable(@NonNull String key, @Nullable Serializable object) {
+        bundle.putSerializable(key, object);
+        return this;
+    }
+
+    public Object navigation(Context context) {
+        return RouterManager.getInstance().navigation(context, this);
+    }
+
+    public void setCall(Call call) {
+        this.call = call;
+    }
+
+    public Call getCall() {
+        return call;
     }
 }

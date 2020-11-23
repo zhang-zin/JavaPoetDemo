@@ -104,6 +104,10 @@ public class ARouterProcessor extends AbstractProcessor {
         messager.printMessage(Diagnostic.Kind.NOTE, "开始process");
 
         TypeElement activityType = elementUtils.getTypeElement(ProcessorConfig.ACTIVITY_PACKAGE);
+        TypeMirror activityMirror = activityType.asType();
+
+        TypeElement callType = elementUtils.getTypeElement(ProcessorConfig.AROUTER_API_CALL);
+        TypeMirror callMirror = callType.asType();
 
         // 循环被@ARouter注解的类
         for (Element element : elements) {
@@ -118,13 +122,15 @@ public class ARouterProcessor extends AbstractProcessor {
                     .addElement(element)
                     .build();
             TypeMirror typeMirror = element.asType();
-            TypeMirror activityMirror = activityType.asType();
-            // 判断被ARouter注解的类是否继承与Activity
-            if (!typeUtils.isSubtype(typeMirror, activityMirror)) {
-                messager.printMessage(Diagnostic.Kind.ERROR, simpleName + "并不是Activity，@ARouter只能在Activity上使用");
-            }
 
-            routerBean.setTypeEnum(RouterBean.TypeEnum.ACTIVITY);
+            if (typeUtils.isSubtype(typeMirror, activityMirror)) {
+                routerBean.setTypeEnum(RouterBean.TypeEnum.ACTIVITY);
+            } else if (typeUtils.isSubtype(typeMirror, callMirror)) {
+                routerBean.setTypeEnum(RouterBean.TypeEnum.CALL);
+                messager.printMessage(Diagnostic.Kind.NOTE, "callMirror: " + callMirror.toString());
+            } else {
+                throw new RuntimeException("暂不支持此类型");
+            }
 
             if (checkRouterPath(routerBean)) {
                 List<RouterBean> routerBeans = allPathMap.get(routerBean.getGroup());
